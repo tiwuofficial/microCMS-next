@@ -25,15 +25,15 @@ type Props = {
   blogList: Blog[];
 };
 
-export default function Index(props: Props) {
+export default function Blogs(props: Props): JSX.Element {
   const { blogList } = props;
   return (
     <div className={styles.container}>
       <Head>
-        <title>microCMS Next.js Sample</title>
+        <title>blogs</title>
       </Head>
 
-      <h1>microCMS Next.js Sample</h1>
+      <h1>Blogs</h1>
 
       <ul className={styles.list}>
         {blogList.map(blog => (
@@ -56,20 +56,19 @@ export default function Index(props: Props) {
           </li>
         ))}
       </ul>
-
-      <Link href="/blogs">more</Link>
     </div>
   )
 }
 
-export const getStaticProps = async () => {
-  const res = await fetch(`${process.env.MICROCMS_ENDPOINT}blog?limit=3`, {
+export const getStaticProps = async (): Promise<{
+  props: Props
+}> => {
+  const res = await fetch(`${process.env.MICROCMS_ENDPOINT}blog`, {
     headers: {
       'X-API-KEY': process.env.MICROCMS_API_KEY
     },
   });
   const data = await res.json();
-  console.log(data);
   return {
     props: {
       blogList: data.contents,
